@@ -22,6 +22,7 @@ for column in table.find_all('th')[0:19]:
     columns.append(column.text.strip().replace('/', '').replace(' ', '_'))
 # %%
 regular_season = pd.DataFrame()
+index_num = 0
 # Inside each 'tr' is where whe can find the content of a row 'td'
 for each_row in table.tbody.find_all('tr'):
     rows = each_row.find_all('td')
@@ -45,7 +46,7 @@ for each_row in table.tbody.find_all('tr'):
     top_team_scorer = rows[15].text.strip()
     goalkeeper = rows[16].text.strip()
     notes = rows[17].text.strip()
-    regular_season = regular_season.append({'Rk': rnk, 'Squad':squad, 'MP': mp,
+    regular_season = pd.concat([regular_season, pd.DataFrame.from_records({'Rk': rnk, 'Squad':squad, 'MP': mp,
     'W': w, 'D': d, 'L': l, 'GF': gf, 'GA': ga, 'GD': gd, 'Pts': pts, 'PtsMP': pts_mp,
-    'xG': xg, 'xGA':xga, 'xGD':xgd, 'xGD90': xgd_90, 'Attendance': attendance, 'Top_Team_Scorer': top_team_scorer, 'Goalkeeper': goalkeeper, 'Notes':notes}, ignore_index=True)
-# %%
+    'xG': xg, 'xGA':xga, 'xGD':xgd, 'xGD90': xgd_90, 'Attendance': attendance, 'Top_Team_Scorer': top_team_scorer, 'Goalkeeper': goalkeeper, 'Notes':notes}, columns=columns, index=[index_num])], axis=0)
+    index_num = index_num + 1
